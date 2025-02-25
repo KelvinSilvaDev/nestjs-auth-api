@@ -1,0 +1,66 @@
+services:
+  postgres_db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: sa
+      POSTGRES_PASSWORD: 119696
+      POSTGRES_DB: data_intelligence
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./
+    environment:
+      DB_HOST: postgres_db
+      DB_USER: sa
+      DB_PASS: 119696
+      DB_NAME: data_intelligence
+      JWT_SECRET: your_jwt_secret
+      JWT_EXPIRES_IN: 3600s
+      JWT_REFRESH_SECRET: your_jwt_refresh_secret
+      JWT_REFRESH_EXPIRES_IN: 86400s
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres_db
+
+volumes:
+  postgres_data:
+
+    # services:
+    #   postgres_db:
+    #     image: postgres:13
+    #     environment:
+    #       POSTGRES_USER: sa
+    #       POSTGRES_PASSWORD: 119696
+    #       POSTGRES_DB: data_intelligence
+    #     ports:
+    #       - "5432:5432"
+    #     volumes:
+    #       - postgres_data:/var/lib/postgresql/data
+
+    #   backend:
+    #     build: ./backend
+    #     environment:
+    #       DB_HOST: postgres_db
+    #       DB_USER: sa
+    #       DB_PASS: 119696
+    #       DB_NAME: data_intelligence
+    #       JWT_SECRET: your_jwt_secret
+    #       JWT_EXPIRES_IN: 3600s
+    #       JWT_REFRESH_SECRET: your_jwt_refresh_secret
+    #       JWT_REFRESH_EXPIRES_IN: 86400s
+    #     ports:
+    #       - "3000:3000"
+    #     depends_on:
+    #       - postgres_db
+
+    #   frontend:
+    #     build: ./frontend
+    #     ports:
+    #       - "4200:4200"
+
+    # volumes:
+    #   postgres_data:
